@@ -35,11 +35,11 @@ module ActiveRecord::Acts::List::PositionColumnMethodDefiner #:nodoc:
       end
 
       define_singleton_method :decrement_all do
-        update_all_with_touch "#{quoted_position_column} = (#{quoted_position_column_with_table_name} - 1)"
+        update_all_with_touch "#{quoted_position_column_with_table_name} = (#{quoted_position_column_with_table_name} - 1)"
       end
 
       define_singleton_method :increment_all do
-        update_all_with_touch "#{quoted_position_column} = (#{quoted_position_column_with_table_name} + 1)"
+        update_all_with_touch "#{quoted_position_column_with_table_name} = (#{quoted_position_column_with_table_name} + 1)"
       end
 
       define_singleton_method :update_all_with_touch do |updates|
@@ -72,7 +72,7 @@ module ActiveRecord::Acts::List::PositionColumnMethodDefiner #:nodoc:
         cached_quoted_now = quoted_current_time_from_proper_timezone
 
         timestamp_attributes_for_update_in_model.map do |attr|
-          ", #{connection.quote_column_name(attr)} = #{cached_quoted_now}"
+          ", #{acts_as_list_class.quoted_table_name}.#{connection.quote_column_name(attr)} = #{cached_quoted_now}"
         end.join
       end
 
